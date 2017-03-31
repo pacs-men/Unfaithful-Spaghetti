@@ -12,27 +12,45 @@ from pygame.locals import *
 
 
 
-D=20
+D=10
+taille_carte = 20
 pygame.init()
 fenetre=pygame.display.set_mode((640,640), RESIZABLE)
 pygame.display.set_caption('Programme Pygame de base')
 
-mape= carte_test.carte(D)
-
-
-
-
-for x in range(10):
-    for y in range(10):
-        fenetre.blit(mape.get_image_case(x, y),(x*64, y*64))
+mape= carte_test.carte(taille_carte)
+x=0
+y=0
+def affichercarte(x0,y0):
+    for x in range(D):
+        for y in range(D):
+            fenetre.blit(mape.get_image_case(x+x0, y+y0),(x*64, y*64))
 
 continuer = 1       
 
 while continuer:
-     for event in pygame.event.get():
-         if event.type == QUIT:
-             continuer = 0       
-pygame.display.flip()
+    for event in pygame.event.get():
+        if event.type == QUIT:
+            continuer = 0
+        tkey=pygame.key.get_pressed()
+        if tkey[K_LEFT]: 
+            if x>0:            
+                x-=1
+            affichercarte(x,y)
+        elif tkey[K_RIGHT]: 
+            if x<taille_carte-D:
+                x+=1
+            affichercarte(x,y)
+        elif tkey[K_UP]: 
+            if y>0:            
+                y-=1
+            affichercarte(x,y)
+        elif tkey[K_DOWN]: 
+            if y<taille_carte-D:
+                y+=1
+            affichercarte(x,y)
+    affichercarte(x,y)
+    pygame.display.flip()
 #==============================================================================
 # def haut():
 #     global x,y
