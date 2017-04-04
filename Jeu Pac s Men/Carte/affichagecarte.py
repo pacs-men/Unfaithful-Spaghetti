@@ -26,7 +26,7 @@ def affichercarte(x0,y0):
     for x in range(D):
         for y in range(D):
             fenetre.blit(mape.get_image_case(x+x0, y+y0),(x*64, y*64))
-<<<<<<< HEAD
+
 def perso(i,j):
     self.image = pygame.image.load("Data/personnage").convert_alpha()
     
