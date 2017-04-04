@@ -2,6 +2,7 @@
 import carte_test
 import pygame
 from pygame.locals import *
+import combat
 
 
 #==============================================================================
@@ -25,6 +26,9 @@ def affichercarte(x0,y0):
     for x in range(D):
         for y in range(D):
             fenetre.blit(mape.get_image_case(x+x0, y+y0),(x*64, y*64))
+perso = combat.AssissinsMagique.img
+position_perso = perso.get_rect()
+fenetre.blit(perso, position_perso)
 
 continuer = 1       
 
@@ -34,18 +38,22 @@ while continuer:
             continuer = 0
         tkey=pygame.key.get_pressed()
         if tkey[K_LEFT]: 
+            position_perso = position_perso.move(3,0)
             if x>0:            
                 x-=1
             affichercarte(x,y)
         elif tkey[K_RIGHT]: 
+            position_perso = position_perso.move(-3,0)
             if x<taille_carte-D:
                 x+=1
             affichercarte(x,y)
         elif tkey[K_UP]: 
+            position_perso = position_perso.move(0,-3)
             if y>0:            
                 y-=1
             affichercarte(x,y)
-        elif tkey[K_DOWN]: 
+        elif tkey[K_DOWN]:#On descend le perso
+			position_perso = position_perso.move(0,3)
             if y<taille_carte-D:
                 y+=1
             affichercarte(x,y)
