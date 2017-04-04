@@ -30,11 +30,9 @@ def affichercarte(x0,y0):
 def perso(i,j):
     self.image = pygame.image.load("Data/personnage").convert_alpha()
     
-=======
 perso = combat.AssassinsMagique.img
 position_perso = perso.get_rect()
 fenetre.blit(perso, position_perso)
->>>>>>> origin/master
 
 continuer = 1       
 
