@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """
 Created on Mon Mar 20 19:40:25 2017
-
 @author: Emeric Coudeville
 """
+
 import pygame
 from pygame.locals import *
 
@@ -20,10 +20,19 @@ class carte:
                            }
                       
         self.matrice_case = [[[] for a in range(self.taille_mat[1])] for a in range(self.taille_mat[0])]
+        self.remplir_mat_case()        
+        self.mat_objet = [[None for a in range(self.taille_mat[1])] for a in range(self.taille_mat[0])]
+            
+        
+        
+    def ajouter_objet(self, (x, y), objet):
+        if self.mat_objet[x][y] == None:
+            self.mat_objet[x][y] = objet
+        
+    def remplir_mat_case(self):         
         for x in range(self.taille_mat[0]):
             for y in range(self.taille_mat[1]):
                 self.matrice_case[x][y] = "herbe"
-                
                 
         for x in range(self.taille_mat[0]):
             print self.taille_mat
@@ -34,20 +43,20 @@ class carte:
             self.matrice_case[0][y] = "mur"
             self.matrice_case[self.taille_mat[1]-1][y] = "mur"
             
-        self.list_objet = []
+        
     
     def get_image_case(self, x, y):
         return self.dict_cases[self.matrice_case[x][y]].image
         
     def add_objet(self, x, y, objet):
-        i
+        pass
        
     def __repr__(self):
         ch = ""
         for x in range(self.taille_mat[0]):
             for y in range(self.taille_mat[1]):
-                if self.matrice_chose[x][y] != None:
-                    ch += self.matrice_chose[x][y].rep
+                if self.mat_objet[x][y] != None:
+                    ch += self.mat_objet[x][y].rep
                 else:
                     ch += self.dict_cases[self.matrice_case[x][y]].rep
             ch += "\n"
@@ -65,7 +74,7 @@ class case:
         self.image = None
     
     def load_image(self):
-        self.image = pygame.image.load(self.chemin_image).convert_alpha()
+        self.image = pygame.image.load(self.chemin_image)#.convert_alpha()
     
     def __repr__(self):
         if self.dessus == None:
@@ -77,10 +86,13 @@ class case:
         return "case de type {} a la position {} \n marchable = {} ouvrable = {} l'image ce trouve en {}".format(
         self.type, self.pos, self.marchable, self.ouvrable, self.image)
 
+    
 class objet:
     def __init__(self, posx, posy):
         self.posx = posx
         self.posy = posy
+    
+
         
 
 class herbe(case):
@@ -106,4 +118,4 @@ class mur(case):
 if __name__ == "__main__":
     a = carte(10)
     print(a)
-    print a .get_image_case(2, 2)
+    
