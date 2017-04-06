@@ -1,0 +1,11 @@
+import Tkinter
+racine0=Tkinter.Tk()
+fond0=Tkinter.Canvas(racine0, width=400, height=400)
+fond0.pack()
+ligne1=fond0.create_line(10, 10, 10, 380, 380, 380, 380, 10, smooth=True, splinesteps="1", fill="orange")
+ligne2=fond0.create_line(10, 10, 10, 380, 380, 380, 380, 10, smooth=True, splinesteps="2", fill="green")
+ligne3=fond0.create_line(10, 10, 10, 380, 380, 380, 380, 10, smooth=True, splinesteps="3", fill="purple")
+ligne5=fond0.create_line(10, 10, 10, 380, 380, 380, 380, 10, smooth=True, splinesteps="5", fill="blue")
+ligne9=fond0.create_line(10, 10, 10, 380, 380, 380, 380, 10, smooth=True, splinesteps="9", fill="red")
+ligne43=fond0.create_line(10, 10, 10, 380, 380, 380, 380, 10, smooth=True)
+racine0.mainloop()
