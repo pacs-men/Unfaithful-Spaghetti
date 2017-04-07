@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
-import random
-import pygame
+import random,pygame
 
 class perso:
     
+    def __call__(self):
+        print "ceci est une fonction"
+    
     def __init__(self):
         self.jouable=False
-        self.pv_max=0   #brut
+        self.pv_max=0
+        self.pv=0       #brut
         self.atk=0      #brut
         self.mag=0      #brut
         self.defen=0    #pourcent
@@ -26,6 +29,33 @@ class perso:
         self.type_action=None
         self.action=None
         self.cible=None
+        
+        self.armure1=0
+        self.armure1fois=0
+        self.armure2=0
+        self.armure2fois=0
+        self.armure3=0
+        self.armure3fois=0
+        self.force1=0
+        self.force1fois=0
+        self.force2=0
+        self.force2fois=0        
+        self.force3=0
+        self.force3fois=0
+        self.critique1=0
+        self.critique1fois=0                
+        self.critique2=0
+        self.critique2fois=0         
+        self.critique3=0
+        self.critique3fois=0 
+        self.vitesse=0
+        self.vitessefois=0
+        self.precision=0
+        self.precisionfois=0
+
+
+
+          
         
         
         
@@ -64,7 +94,6 @@ class perso:
         '''
             execution d'une attaque magique
         '''
-        #print 3
         self.passif_def()
         if random.randrange(100)<self.prec:
             if random.randrange(100)>self.crit:
@@ -100,20 +129,214 @@ class perso:
     
     
     
-    def cible(self,participant):
+    def cible_def(self, participant):
         '''        
             IA basique pour definir le type d'attaque
             des enemis envers le joueur            
         '''
-        if self.jouable==True:
+        if self.jouable==False:
+            if self.atk > self.mag:
+                self.action="Physique"
+            else:
+                self.action="Magique"
+            for i in range (len(participant)):
+                if participant[i].jouable==True:
+                    self.cible=participant[i]
+                    
+    def popo_actif(self):
+        potion=self.action
+        if potion == "vie1": 
+            self.pv += 50
+            if self.pv > self.pv_max:
+                self.pv = self.pv_max
             pass
-        if self.atk > self.mag:
-            self.action="Physique"
-        else:
-            self.action="Magique"
-        for i in range (len(participant)):
-            if participant[i].jouable==True:
-                self.cible=participant[i]
+        
+        if potion == "vie2": 
+            self.pv += 100
+            if self.pv > self.pv_max:
+                self.pv = self.pv_max
+            pass
+        
+        if potion == "vie3": 
+            self.pv += 250
+            if self.pv > self.pv_max:
+                self.pv = self.pv_max
+            pass
+        
+        if potion == "force1":
+            self.atk += 50
+            self.mag += 50  
+            self.force1 =2
+            self.force1fois +=1
+            pass
+        
+        if potion == "force2": 
+            self.atk +=100
+            self.mag +=100
+            self.force1 =2
+            self.force2fois +=1
+            pass
+        
+        if potion == "force3": 
+            self.atk +=150
+            self.mag +=150
+            self.force3 =1  #"tour"
+            self.force3fois +=1
+            pass
+            
+        if potion == "armure1": 
+            self.defend +=5
+            self.res +=5
+            self.armure1 =2 #"tour"
+            self.armure1fois +=1
+            pass
+            
+        if potion == "armure2": 
+            self.defend +=10
+            self.res +=10
+            self.armure2 =2 #"tour"
+            self.armure2fois +=1
+            pass
+            
+        if potion == "armure3": 
+            self.defend +=20
+            self.res +=20
+            self.armure3 =1 #"tour"
+            self.armure3fois +=1
+            pass
+            
+        if potion == "critique1": 
+            self.crit += 5
+            self.critique1 =4 #"tour"
+            self.critique1fois +=1
+            pass
+            
+        if potion == "critique2": 
+            self.crit += 10
+            self.critique2 =3#"tour"
+            self.critique2fois +=1
+            pass
+            
+        if potion == "critique3": 
+            self.crit += 15
+            self.critique3 =2 #"tour"
+            pass
+        
+        if potion == "vitesse": 
+            self.vit += 100
+            self.vitesse =1 #"combat"
+            self.vitessefois +=1
+            pass
+            
+        if potion == "precision": 
+            self.prec += 15
+            self.precision =1 #"combat"
+            self.precisionfois +=1
+            pass
+            
+    
+    def popo_def(self):
+        if self.precisionfois > 0:
+            if self.precision == 0:
+                self.prec -= 10
+                self.precisionfois -= 1
+            else:
+                self.precison -=1
+
+        if self.vitessefois > 0:
+            if self.vitesse == 0:
+                self.vit -= 10
+                self.vitessefois -= 1
+            else:
+                self.vitesse -=1
+
+        if self.critique3fois > 0:
+            if self.critique3 == 0:
+                self.crit -= 15
+                self.critique3fois -= 1
+            else:
+                self.critique3 -=1
+    
+        if self.critique2fois > 0:
+            if self.critique2 == 0:
+                self.crit -= 10
+                self.critique2fois -= 1
+            else:
+                self.critique2 -=1    
+    
+        if self.critique1fois > 0:
+            if self.critique1 == 0:
+                self.crit -= 5
+                self.critique1fois -= 1
+            else:
+                self.critique1 -=1     
+
+        if self.armure1fois > 0:
+            if self.armure1 == 0:
+                self.defend -= 5
+                self.res -=5
+                self.armure1fois -= 1
+            else:
+                self.armure1 -=1  
+
+        if self.armure2fois > 0:
+            if self.armure2 == 0:
+                self.defend -= 5
+                self.res -=5
+                self.armure2fois -= 1
+            else:
+                self.armure2 -=1      
+
+        if self.armure3fois > 0:
+            if self.armure3 == 0:
+                self.defend -= 5
+                self.res -=5
+                self.armure3fois -= 1
+            else:
+                self.armure3 -=1     
+    
+        if self.force3fois > 0:
+            if self.force3 == 0:
+                self.atk -= 150
+                self.mag -= 150
+                self.force3fois -= 1
+            else:
+                self.force3 -=1       
+     
+        if self.force2fois > 0:
+            if self.force2 == 0:
+                self.atk -= 100
+                self.mag -= 100
+                self.force2fois -= 1
+            else:
+                self.force2 -=1      
+    
+        if self.force1fois > 0:
+            if self.force1 == 0:
+                self.atk -= 50
+                self.mag -= 50
+                self.force1fois -= 1
+            else:
+                self.force1 -=1
+            
+class AssassinsMagique(perso):
+    def __init__(self):
+        perso.__init__(self)
+        self.nom="Sebastien"
+        self.jouable=True
+        self.pv_max=200
+        self.pv=200
+        self.atk=10
+        self.mag=100
+        self.defen=5
+        self.res=5
+        self.vit=80
+        self.prec=100
+        self.crit=10
+        self.img= pygame.image.load("Data/perso.png").convert_alpha()
+        
+        def passif_def(self,adv):
+            self.pv += 5
 
 class Mage(perso):
     
@@ -122,6 +345,7 @@ class Mage(perso):
         self.nom="Emeric"
         self.jouable=True
         self.pv_max=100
+        self.pv=100
         self.atk=10
         self.mag=125
         self.defen=5
@@ -129,6 +353,7 @@ class Mage(perso):
         self.vit=80
         self.prec=90
         self.crit=5
+        #self.img= pygame.image.load("Data/").convert_alpha()
         
     def passif_def(adv):
         if random.randrange(10)<1:
@@ -141,6 +366,7 @@ class AssassinsPhysique(perso):
         self.nom="nassim"
         self.jouable=True
         self.pv_max=250
+        self.pv=250
         self.atk=100
         self.mag=10
         self.defen=5
@@ -148,6 +374,7 @@ class AssassinsPhysique(perso):
         self.vit=80
         self.prec=100
         self.crit=10
+        #self.img= pygame.image.load("Data/").convert_alpha()
         
      def passif_def(adv):
         adv.saignement = 1
@@ -158,6 +385,7 @@ class Combattant(perso):
         self.nom="Pierre Antoine"
         self.jouable=True
         self.pv_max=500
+        self.pv=500
         self.atk=75
         self.mag=10
         self.defen=10
@@ -177,24 +405,6 @@ class Combattant(perso):
             self.defen == self.defen/2
             self.res == self.res/2
             self.passif = 0
-            
-class AssassinsMagique(perso):
-    def __init__(self):
-        perso.__init__(self)
-        self.nom="Sebastien"
-        self.jouable=True
-        self.pv_max=200
-        self.atk=10
-        self.mag=100
-        self.defen=5
-        self.res=5
-        self.vit=80
-        self.prec=100
-        self.crit=10
-        
-    def passif_def(self,adv):
-        print 8
-        self.pv += 5
         
 class Archer(perso):
     def __init__(self):
@@ -202,6 +412,7 @@ class Archer(perso):
         self.nom="Martin"
         self.jouable=True
         self.pv_max=100
+        self.pv=100
         self.atk=125
         self.mag=10
         self.defen=5
@@ -220,6 +431,7 @@ class Soigneur(perso):
         self.nom="Clarisse La BG"
         self.jouable=True
         self.pv_max=175
+        self.pv=175
         self.atk=10
         self.mag=75
         self.defen=5
@@ -237,6 +449,7 @@ class ennemi_test(perso):
         perso.__init__(self)
         self.nom="test"
         self.pv_max=100
+        self.pv=100
         self.atk=10
         self.vit=10
 
@@ -561,8 +774,10 @@ def combat_attaque(participant_vit):
                 pass
             
         else:
-            participant_vit[i].cible(participant_vit)
+            participant_vit[i].cible_def(participant_vit)
             participant_vit[i].attaque()
+            participant_vit[i].popo_def()
+            
             
     
     
@@ -671,102 +886,7 @@ class potionvitesse:
         self.prec=50   
                 
                 
-def popo_actif(self):
-    potion=self.action
-    if potion == "vie1": 
-        self.pv += 50
-        pass
-    
-    if potion == "vie2": 
-        self.pv += 100
-        pass
-    
-    if potion == "vie3": 
-        self.pv += 250
-        pass
-    
-    if potion == "force1":
-        self.atk += 50
-        self.mag += 50  
-        self.force1 =2
-        self.force1fois +=1
-        pass
-    
-    if potion == "force2": 
-        self.atk +=100
-        self.mag +=100
-        self.force1 =2
-        self.force2fois +=1
-        pass
-    
-    if potion == "force3": 
-        self.atk +=150
-        self.mag +=150
-        self.force3 =1  #"tour"
-        self.force3fois +=1
-        pass
-        
-    if potion == "armure1": 
-        self.defend +=5
-        self.res +=5
-        self.armure1 =2 #"tour"
-        self.armure1fois +=1
-        pass
-        
-    if potion == "armure2": 
-        self.defend +=10
-        self.res +=10
-        self.armure2 =2 #"tour"
-        self.armure2fois +=1
-        pass
-        
-    if potion == "armure3": 
-        self.defend +=20
-        self.res +=20
-        self.armure3 =1 #"tour"
-        self.armure3fois +=1
-        pass
-        
-    if potion == "critique1": 
-        self.crit += 5
-        self.critique1 =4 #"tour"
-        self.critique1fois +=1
-        pass
-        
-    if potion == "critique2": 
-        self.crit += 10
-        self.critique2 =3#"tour"
-        self.critique2fois +=1
-        pass
-        
-    if potion == "critique3": 
-        self.crit += 15
-        self.critique3 =2 #"tour"
-        pass
-    
-    if potion == "vitesse": 
-        self.vit += 100
-        self.vitesse =1 #"combat"
-        self.vitessefois +=1
-        pass
-        
-    if potion == "precision": 
-        self.prec += 15
-        self.precision =1 #"combat"
-        self.precisionfois +=1
-        pass
-        
-    
-def popo_def(self):
-        if self.effet==True:
-            if self.brulure > 0:
-                self.pv -= 5
-                self.brulure -= 1
-            elif self.saignement > 0:
-                self.pv -= 10
-                self.saignement -= 1
-            else:
-                self.effet=False
+
    
 
         
